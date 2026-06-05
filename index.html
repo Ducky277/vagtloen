@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vagtløn</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #0e0f11; color: #f0f2f5; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
@@ -17,45 +18,41 @@
   label { font-size: 0.72rem; color: #7a7f8e; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'DM Mono', monospace; }
   input { background: #1e2128; border: 1px solid #2a2d35; border-radius: 8px; color: #f0f2f5; font-family: 'DM Mono', monospace; font-size: 0.95rem; padding: 0.5rem 0.75rem; outline: none; transition: border-color 0.2s; width: 100%; }
   input:focus { border-color: #c8f135; }
-  .btn { background: #c8f135; color: #0e0f11; border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; padding: 0.6rem 1.25rem; cursor: pointer; white-space: nowrap; align-self: flex-end; transition: opacity 0.2s; }
+  .btn { background: #c8f135; color: #0e0f11; border: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem; padding: 0.6rem 1.25rem; cursor: pointer; }
   .btn:hover { opacity: 0.85; }
   .btn.secondary { background: transparent; color: #c8f135; border: 1px solid #c8f135; }
   .period-nav { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
-  .period-nav button { background: #16181c; border: 1px solid #2a2d35; border-radius: 8px; color: #f0f2f5; font-size: 1rem; width: 36px; height: 36px; cursor: pointer; }
-  .period-nav button:hover { border-color: #c8f135; color: #c8f135; }
-  .period-name { font-family: 'DM Mono', monospace; font-size: 0.95rem; min-width: 220px; text-align: center; color: #f0f2f5; }
+  .period-nav button { background: #16181c; border: 1px solid #2a2d35; border-radius: 8px; color: #f0f2f5; width: 36px; height: 36px; cursor: pointer; }
+  .period-name { font-family: 'DM Mono', monospace; font-size: 0.95rem; min-width: 220px; text-align: center; }
   .status-bar { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #7a7f8e; font-family: 'DM Mono', monospace; margin-bottom: 1.5rem; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: #7a7f8e; flex-shrink: 0; }
-  .dot.connected { background: #c8f135; box-shadow: 0 0 6px #c8f135; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #7a7f8e; }
+  .dot.connected { background: #c8f135; }
   .dot.error { background: #ff5f5f; }
+
   .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
   .stat-card { background: #16181c; border: 1px solid #2a2d35; border-radius: 12px; padding: 1.25rem; }
   .stat-card.highlight { border-color: #c8f135; }
-  .stat-label { font-size: 0.72rem; color: #7a7f8e; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'DM Mono', monospace; margin-bottom: 0.6rem; }
-  .stat-value { font-family: 'DM Mono', monospace; font-size: 1.6rem; font-weight: 500; line-height: 1; }
+  .stat-label { font-size: 0.72rem; color: #7a7f8e; font-family: 'DM Mono', monospace; margin-bottom: 0.6rem; }
+  .stat-value { font-family: 'DM Mono', monospace; font-size: 1.6rem; }
   .stat-value.accent { color: #c8f135; }
   .stat-value.red { color: #ff5f5f; }
   .stat-value.teal { color: #5ce1c8; }
-  .stat-sub { font-size: 0.76rem; color: #7a7f8e; margin-top: 0.4rem; font-family: 'DM Mono', monospace; }
+
   .shifts-table { background: #16181c; border: 1px solid #2a2d35; border-radius: 12px; overflow: hidden; }
-  .table-header { display: grid; grid-template-columns: 2fr 80px 110px 110px; padding: 0.75rem 1.25rem; border-bottom: 1px solid #2a2d35; font-size: 0.7rem; color: #7a7f8e; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'DM Mono', monospace; gap: 0.5rem; }
-  .shift-row { display: grid; grid-template-columns: 2fr 80px 110px 110px; padding: 0.85rem 1.25rem; border-bottom: 1px solid #2a2d35; align-items: center; gap: 0.5rem; transition: background 0.15s; }
-  .shift-row:last-child { border-bottom: none; }
+  .table-header, .shift-row { display: grid; grid-template-columns: 2fr 80px 110px 110px; padding: 0.85rem 1.25rem; gap: 0.5rem; }
+  .table-header { border-bottom: 1px solid #2a2d35; font-size: 0.7rem; color: #7a7f8e; text-transform: uppercase; }
+  .shift-row { border-bottom: 1px solid #2a2d35; }
   .shift-row:hover { background: #1e2128; }
   .shift-title { font-size: 0.88rem; }
-  .shift-date { font-size: 0.78rem; color: #7a7f8e; font-family: 'DM Mono', monospace; }
-  .mono { font-family: 'DM Mono', monospace; font-size: 0.88rem; }
+  .shift-date { font-size: 0.78rem; color: #7a7f8e; }
+  .mono { font-family: 'DM Mono', monospace; }
   .teal { color: #5ce1c8; }
   .yellow { color: #c8f135; }
-  .empty-state { padding: 3rem; text-align: center; color: #7a7f8e; font-family: 'DM Mono', monospace; font-size: 0.88rem; line-height: 2; }
-  @media (max-width: 600px) {
-    .table-header { grid-template-columns: 1fr 70px 90px; }
-    .table-header > :last-child { display: none; }
-    .shift-row { grid-template-columns: 1fr 70px 90px; }
-    .shift-row > :last-child { display: none; }
-  }
+
+  .empty-state { padding: 3rem; text-align: center; color: #7a7f8e; }
 </style>
 </head>
+
 <body>
 <div class="wrapper">
   <div class="logo">Vagtkassen <span>/ lønoversigt</span></div>
@@ -63,36 +60,33 @@
   <div class="settings-bar">
     <div class="field">
       <label>Grundløn (kr/t)</label>
-      <input type="number" id="baseRate" value="142.17" step="0.01">
+      <input type="number" id="baseRate" value="142.17">
     </div>
     <div class="field">
-      <label>Aftentillæg hverdag (kr/t)</label>
-      <input type="number" id="eveningRate" value="16.08" step="0.01">
+      <label>Aftentillæg</label>
+      <input type="number" id="eveningRate" value="16.08">
     </div>
     <div class="field">
-      <label>Lørdagstillæg (kr/t)</label>
-      <input type="number" id="satRate" value="28.28" step="0.01">
+      <label>Lørdag</label>
+      <input type="number" id="satRate" value="28.28">
     </div>
     <div class="field">
-      <label>Søn/helligdag (kr/t)</label>
-      <input type="number" id="sunRate" value="31.50" step="0.01">
+      <label>Søn</label>
+      <input type="number" id="sunRate" value="31.50">
     </div>
     <div class="field">
-      <label>Skatteprocent (%)</label>
-      <input type="number" id="taxRate" value="39" step="0.1">
+      <label>Skat %</label>
+      <input type="number" id="taxRate" value="39">
     </div>
-    <div class="field" style="min-width:200px;flex:2">
-      <label>Apps Script URL</label>
-      <input type="text" id="apiUrl" placeholder="Indsæt din URL her...">
-    </div>
+
     <button class="btn" onclick="loadShifts()">Hent vagter</button>
   </div>
 
   <div class="period-nav">
-    <button onclick="changePeriod(-1)">&#8592;</button>
+    <button onclick="changePeriod(-1)">←</button>
     <div class="period-name" id="periodName">—</div>
-    <button onclick="changePeriod(1)">&#8594;</button>
-    <button class="btn secondary" onclick="goToNow()" style="font-size:0.78rem;padding:0.4rem 0.8rem;align-self:auto">Nuværende periode</button>
+    <button onclick="changePeriod(1)">→</button>
+    <button class="btn secondary" onclick="goToNow()">Nuværende</button>
   </div>
 
   <div class="status-bar">
@@ -102,225 +96,116 @@
 
   <div class="stats-grid">
     <div class="stat-card">
-      <div class="stat-label">Vagter</div>
+      <div>Vagter</div>
       <div class="stat-value" id="statCount">—</div>
-      <div class="stat-sub">denne periode</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Timer i alt</div>
+      <div>Timer</div>
       <div class="stat-value" id="statHours">—</div>
-      <div class="stat-sub">arbejdstimer</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Brutto løn</div>
+      <div>Brutto</div>
       <div class="stat-value accent" id="statGross">—</div>
-      <div class="stat-sub">kr før skat</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Skat</div>
-      <div class="stat-value red" id="statTax">—</div>
-      <div class="stat-sub" id="statTaxSub">kr fratrukket</div>
-    </div>
-    <div class="stat-card highlight">
-      <div class="stat-label">Nettoudbetaling</div>
+      <div>Netto</div>
       <div class="stat-value teal" id="statNet">—</div>
-      <div class="stat-sub">kr udbetalt</div>
     </div>
   </div>
 
   <div class="shifts-table">
     <div class="table-header">
-      <div>Begivenhed</div>
-      <div>Timer</div>
+      <div>Vagt</div>
+      <div>Tid</div>
       <div>Brutto</div>
       <div>Netto</div>
     </div>
     <div id="shiftsBody">
-      <div class="empty-state">Indsæt din Apps Script URL og tryk "Hent vagter"<br>Skriv vagter som fx <strong style="color:#f0f2f5">Arbejde 16-21</strong> i Google Kalender</div>
+      <div class="empty-state">Henter data...</div>
     </div>
   </div>
 </div>
 
 <script>
-var DK_MONTHS = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
-var DK_MONTHS_FULL = ['Januar','Februar','Marts','April','Maj','Juni','Juli','August','September','Oktober','November','December'];
-var DK_HOLIDAYS = ['01/01','06/01','28/03','29/03','30/03','31/03','17/04','18/04','01/05','09/05','19/05','29/05','05/06','24/12','25/12','26/12','31/12'];
 
-// Lønperiode: 20. i én måned til 19. i næste
-// periodOffset 0 = nuværende periode
+const API_URL = "https://script.google.com/macros/s/AKfycbxgktjTN9a69CGlDBsiL0O7hparyB0_8AsdXG0hW_FNzmHjyVC9bNy-dKj77KgknWRQhA/exec";
+
 var periodOffset = 0;
 
-function getCurrentPeriodBounds() {
-  var now = new Date();
-  var y = now.getFullYear();
-  var m = now.getMonth(); // 0-indexed
-  var d = now.getDate();
-  // Hvis vi er den 20 eller efter → periode starter denne måned
-  // Hvis vi er før den 20 → periode startede forrige måned
-  var startMonth, startYear;
-  if (d >= 20) {
-    startMonth = m;
-    startYear  = y;
-  } else {
-    startMonth = m - 1;
-    startYear  = y;
-    if (startMonth < 0) { startMonth = 11; startYear--; }
-  }
-  return { startYear: startYear, startMonth: startMonth };
-}
-
-function getPeriodBounds(offset) {
-  var base = getCurrentPeriodBounds();
-  var sm = base.startMonth + offset;
-  var sy = base.startYear;
-  while (sm > 11) { sm -= 12; sy++; }
-  while (sm < 0)  { sm += 12; sy--; }
-  var em = sm + 1;
-  var ey = sy;
-  if (em > 11) { em = 0; ey++; }
-  return {
-    startYear: sy, startMonth: sm,   // start: 20. sm
-    endYear: ey,   endMonth: em       // end:   19. em
-  };
-}
-
-function updatePeriodDisplay() {
-  var b = getPeriodBounds(periodOffset);
-  var label = '20. ' + DK_MONTHS[b.startMonth] + ' ' + b.startYear
-            + ' – 19. ' + DK_MONTHS[b.endMonth] + ' ' + b.endYear;
-  document.getElementById('periodName').textContent = label;
-}
-
-function changePeriod(dir) {
-  periodOffset += dir;
-  updatePeriodDisplay();
-  if (document.getElementById('apiUrl').value.trim()) loadShifts();
-}
-
-function goToNow() {
-  periodOffset = 0;
-  updatePeriodDisplay();
-  if (document.getElementById('apiUrl').value.trim()) loadShifts();
-}
-
-function setStatus(state, text) {
-  document.getElementById('statusDot').className = 'dot ' + state;
-  document.getElementById('statusText').textContent = text;
+function setStatus(type, text) {
+  document.getElementById('statusDot').className = 'dot ' + type;
+  document.getElementById('statusText').innerText = text;
 }
 
 function getRates() {
   return {
-    base:    parseFloat(document.getElementById('baseRate').value)    || 142.17,
-    evening: parseFloat(document.getElementById('eveningRate').value) || 16.08,
-    sat:     parseFloat(document.getElementById('satRate').value)     || 28.28,
-    sun:     parseFloat(document.getElementById('sunRate').value)     || 31.50,
-    tax:     parseFloat(document.getElementById('taxRate').value) / 100 || 0.39
+    base: +baseRate.value,
+    evening: +eveningRate.value,
+    sat: +satRate.value,
+    sun: +sunRate.value,
+    tax: +taxRate.value / 100
   };
 }
 
 async function loadShifts() {
-  var url = document.getElementById('apiUrl').value.trim();
-  if (!url) { setStatus('error', 'Ingen URL — indsæt din Apps Script URL'); return; }
-  setStatus('', 'Henter vagter...');
-
-  var b = getPeriodBounds(periodOffset);
-  // Hent begge måneder der indgår i perioden
+  setStatus('', 'Henter...');
   try {
-    var r1 = await fetch(url + '?year=' + b.startYear  + '&month=' + (b.startMonth + 1));
-    var r2 = await fetch(url + '?year=' + b.endYear    + '&month=' + (b.endMonth   + 1));
-    var d1 = await r1.json();
-    var d2 = await r2.json();
-    // Filtrer: kun vagter fra 20. startMåned til 19. slutMåned
-    var all = d1.concat(d2);
-    var filtered = all.filter(function(s) {
-      var parts = s.date.split('/');
-      var day = parseInt(parts[0]);
-      var mon = parseInt(parts[1]) - 1; // 0-indexed
-      var shiftDate = new Date(s.year || b.startYear, mon, day);
-      // Gæt år
-      var startDate = new Date(b.startYear, b.startMonth, 20);
-      var endDate   = new Date(b.endYear,   b.endMonth,   19);
-      // Prøv begge år for måneden
-      if (shiftDate < startDate) { shiftDate = new Date(b.endYear, mon, day); }
-      return shiftDate >= startDate && shiftDate <= endDate;
-    });
-    renderShifts(filtered);
-    setStatus('connected', 'Forbundet — opdateret ' + new Date().toLocaleTimeString('da-DK'));
-    saveSettings();
-  } catch(err) {
-    setStatus('error', 'Fejl: ' + err.message);
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    render(data);
+    setStatus('connected', 'Forbundet');
+  } catch (e) {
+    setStatus('error', 'Fejl');
   }
 }
 
-function calcShiftPay(s, r) {
-  var bonus = 0;
-  if (s.isSunday) {
-    bonus = s.hours * r.sun;
-  } else if (s.isSaturday) {
-    bonus = s.hours * r.sat;
-  } else if (s.eveningHours > 0) {
-    bonus = s.eveningHours * r.evening;
-  }
-  var gross = s.hours * r.base + bonus;
-  return gross;
+function calc(s, r) {
+  let bonus = 0;
+  if (s.isSunday) bonus = s.hours * r.sun;
+  else if (s.isSaturday) bonus = s.hours * r.sat;
+  else bonus = s.eveningHours * r.evening;
+
+  return s.hours * r.base + bonus;
 }
 
-function renderShifts(shifts) {
-  var r = getRates();
-  var body = document.getElementById('shiftsBody');
-  if (!shifts.length) {
-    body.innerHTML = '<div class="empty-state">Ingen vagter fundet i denne periode<br>Skriv fx <strong style="color:#f0f2f5">Arbejde 16-21</strong> i Google Kalender</div>';
-    updateStats(0, 0, 0, r);
-    return;
-  }
-  var html = '';
-  var totalHours = 0, totalGross = 0;
-  shifts.forEach(function(s) {
-    var gross = calcShiftPay(s, r);
-    var netto = gross * (1 - r.tax);
-    totalHours += s.hours;
-    totalGross += gross;
-    html += '<div class="shift-row">'
-      + '<div><div class="shift-title">' + esc(s.title) + '</div><div class="shift-date">' + esc(s.date) + '</div></div>'
-      + '<div class="mono">' + s.hours + 't</div>'
-      + '<div class="mono yellow">' + Math.round(gross).toLocaleString('da-DK') + ' kr</div>'
-      + '<div class="mono teal">'  + Math.round(netto).toLocaleString('da-DK') + ' kr</div>'
-      + '</div>';
+function render(shifts) {
+  const r = getRates();
+  let html = '';
+  let hours = 0, gross = 0;
+
+  shifts.forEach(s => {
+    const g = calc(s, r);
+    const n = g * (1 - r.tax);
+
+    hours += s.hours;
+    gross += g;
+
+    html += `
+      <div class="shift-row">
+        <div>
+          <div class="shift-title">${s.title}</div>
+          <div class="shift-date">${s.date}</div>
+        </div>
+        <div class="mono">${s.hours}t</div>
+        <div class="mono yellow">${Math.round(g)} kr</div>
+        <div class="mono teal">${Math.round(n)} kr</div>
+      </div>
+    `;
   });
-  body.innerHTML = html;
-  updateStats(shifts.length, totalHours, totalGross, r);
+
+  shiftsBody.innerHTML = html;
+
+  statCount.innerText = shifts.length;
+  statHours.innerText = hours;
+  statGross.innerText = Math.round(gross) + " kr";
+  statNet.innerText = Math.round(gross * (1 - r.tax)) + " kr";
 }
 
-function updateStats(count, hours, gross, r) {
-  var tax = gross * r.tax;
-  var net = gross - tax;
-  document.getElementById('statCount').textContent  = count;
-  document.getElementById('statHours').textContent  = hours % 1 === 0 ? hours : hours.toFixed(1);
-  document.getElementById('statGross').textContent  = Math.round(gross).toLocaleString('da-DK') + ' kr';
-  document.getElementById('statTax').textContent    = '-' + Math.round(tax).toLocaleString('da-DK') + ' kr';
-  document.getElementById('statTaxSub').textContent = parseFloat(document.getElementById('taxRate').value).toFixed(1) + '% skat fratrukket';
-  document.getElementById('statNet').textContent    = Math.round(net).toLocaleString('da-DK') + ' kr';
-}
+function changePeriod() {}
+function goToNow() {}
 
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-function saveSettings() {
-  localStorage.setItem('vl_base',    document.getElementById('baseRate').value);
-  localStorage.setItem('vl_evening', document.getElementById('eveningRate').value);
-  localStorage.setItem('vl_sat',     document.getElementById('satRate').value);
-  localStorage.setItem('vl_sun',     document.getElementById('sunRate').value);
-  localStorage.setItem('vl_tax',     document.getElementById('taxRate').value);
-  localStorage.setItem('vl_url',     document.getElementById('apiUrl').value);
-}
-
-(function() {
-  var map = {baseRate:'vl_base', eveningRate:'vl_evening', satRate:'vl_sat', sunRate:'vl_sun', taxRate:'vl_tax', apiUrl:'vl_url'};
-  Object.keys(map).forEach(function(id) {
-    var v = localStorage.getItem(map[id]);
-    if (v) document.getElementById(id).value = v;
-  });
-  updatePeriodDisplay();
-})();
+loadShifts();
 </script>
+
 </body>
 </html>
