@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vagtløn</title>
+
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
@@ -11,201 +12,200 @@
   html, body { background: #0e0f11; color: #f0f2f5; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
   body { padding: 2rem 1rem; }
   .wrapper { max-width: 960px; margin: 0 auto; }
-  .logo { font-family: 'DM Mono', monospace; font-size: 1.05rem; color: #c8f135; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2rem; }
-  .logo span { color: #7a7f8e; }
-  .settings-bar { background: #16181c; border: 1px solid #2a2d35; border-radius: 12px; padding: 1.25rem 1.5rem; display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; margin-bottom: 2rem; }
-  .field { display: flex; flex-direction: column; gap: 0.35rem; flex: 1; min-width: 130px; }
-  label { font-size: 0.72rem; color: #7a7f8e; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'DM Mono', monospace; }
-  input { background: #1e2128; border: 1px solid #2a2d35; border-radius: 8px; color: #f0f2f5; font-family: 'DM Mono', monospace; font-size: 0.95rem; padding: 0.5rem 0.75rem; outline: none; transition: border-color 0.2s; width: 100%; }
-  input:focus { border-color: #c8f135; }
-  .btn { background: #c8f135; color: #0e0f11; border: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem; padding: 0.6rem 1.25rem; cursor: pointer; }
-  .btn:hover { opacity: 0.85; }
-  .btn.secondary { background: transparent; color: #c8f135; border: 1px solid #c8f135; }
-  .period-nav { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
-  .period-nav button { background: #16181c; border: 1px solid #2a2d35; border-radius: 8px; color: #f0f2f5; width: 36px; height: 36px; cursor: pointer; }
-  .period-name { font-family: 'DM Mono', monospace; font-size: 0.95rem; min-width: 220px; text-align: center; }
-  .status-bar { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #7a7f8e; font-family: 'DM Mono', monospace; margin-bottom: 1.5rem; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: #7a7f8e; }
-  .dot.connected { background: #c8f135; }
-  .dot.error { background: #ff5f5f; }
 
-  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-  .stat-card { background: #16181c; border: 1px solid #2a2d35; border-radius: 12px; padding: 1.25rem; }
-  .stat-card.highlight { border-color: #c8f135; }
-  .stat-label { font-size: 0.72rem; color: #7a7f8e; font-family: 'DM Mono', monospace; margin-bottom: 0.6rem; }
-  .stat-value { font-family: 'DM Mono', monospace; font-size: 1.6rem; }
-  .stat-value.accent { color: #c8f135; }
-  .stat-value.red { color: #ff5f5f; }
-  .stat-value.teal { color: #5ce1c8; }
+  .logo {
+    font-family: 'DM Mono', monospace;
+    color: #c8f135;
+    margin-bottom: 2rem;
+  }
 
-  .shifts-table { background: #16181c; border: 1px solid #2a2d35; border-radius: 12px; overflow: hidden; }
-  .table-header, .shift-row { display: grid; grid-template-columns: 2fr 80px 110px 110px; padding: 0.85rem 1.25rem; gap: 0.5rem; }
-  .table-header { border-bottom: 1px solid #2a2d35; font-size: 0.7rem; color: #7a7f8e; text-transform: uppercase; }
-  .shift-row { border-bottom: 1px solid #2a2d35; }
-  .shift-row:hover { background: #1e2128; }
-  .shift-title { font-size: 0.88rem; }
-  .shift-date { font-size: 0.78rem; color: #7a7f8e; }
-  .mono { font-family: 'DM Mono', monospace; }
+  .settings-bar {
+    background: #16181c;
+    border: 1px solid #2a2d35;
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .field {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  label {
+    font-size: 0.7rem;
+    color: #7a7f8e;
+  }
+
+  input {
+    width: 100%;
+    background: #1e2128;
+    border: 1px solid #2a2d35;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+
+  .btn {
+    background: #c8f135;
+    border: none;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+
+  .status-bar {
+    margin-bottom: 1rem;
+    color: #7a7f8e;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: #16181c;
+    border: 1px solid #2a2d35;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
+    font-family: monospace;
+  }
+
   .teal { color: #5ce1c8; }
-  .yellow { color: #c8f135; }
+  .accent { color: #c8f135; }
 
-  .empty-state { padding: 3rem; text-align: center; color: #7a7f8e; }
+  .shifts {
+    background: #16181c;
+    border-radius: 12px;
+    border: 1px solid #2a2d35;
+    padding: 1rem;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    padding: 0.8rem;
+    border-bottom: 1px solid #2a2d35;
+  }
 </style>
 </head>
 
 <body>
 <div class="wrapper">
-  <div class="logo">Vagtkassen <span>/ lønoversigt</span></div>
+
+  <div class="logo">Vagtløn</div>
 
   <div class="settings-bar">
     <div class="field">
-      <label>Grundløn (kr/t)</label>
-      <input type="number" id="baseRate" value="142.17">
-    </div>
-    <div class="field">
-      <label>Aftentillæg</label>
-      <input type="number" id="eveningRate" value="16.08">
-    </div>
-    <div class="field">
-      <label>Lørdag</label>
-      <input type="number" id="satRate" value="28.28">
-    </div>
-    <div class="field">
-      <label>Søn</label>
-      <input type="number" id="sunRate" value="31.50">
-    </div>
-    <div class="field">
-      <label>Skat %</label>
-      <input type="number" id="taxRate" value="39">
+      <label>Base rate</label>
+      <input id="baseRate" value="142.17">
     </div>
 
-    <button class="btn" onclick="loadShifts()">Hent vagter</button>
+    <div class="field">
+      <label>Tax %</label>
+      <input id="taxRate" value="39">
+    </div>
+
+    <button class="btn" onclick="loadShifts()">Load</button>
   </div>
 
-  <div class="period-nav">
-    <button onclick="changePeriod(-1)">←</button>
-    <div class="period-name" id="periodName">—</div>
-    <button onclick="changePeriod(1)">→</button>
-    <button class="btn secondary" onclick="goToNow()">Nuværende</button>
-  </div>
-
-  <div class="status-bar">
-    <div class="dot" id="statusDot"></div>
-    <span id="statusText">Ikke forbundet</span>
-  </div>
+  <div class="status-bar" id="status">Not connected</div>
 
   <div class="stats-grid">
     <div class="stat-card">
-      <div>Vagter</div>
-      <div class="stat-value" id="statCount">—</div>
+      <div>Shifts</div>
+      <div class="stat-value" id="count">—</div>
     </div>
+
     <div class="stat-card">
-      <div>Timer</div>
-      <div class="stat-value" id="statHours">—</div>
+      <div>Hours</div>
+      <div class="stat-value" id="hours">—</div>
     </div>
+
     <div class="stat-card">
-      <div>Brutto</div>
-      <div class="stat-value accent" id="statGross">—</div>
+      <div>Gross</div>
+      <div class="stat-value accent" id="gross">—</div>
     </div>
+
     <div class="stat-card">
-      <div>Netto</div>
-      <div class="stat-value teal" id="statNet">—</div>
+      <div>Net</div>
+      <div class="stat-value teal" id="net">—</div>
     </div>
   </div>
 
-  <div class="shifts-table">
-    <div class="table-header">
-      <div>Vagt</div>
-      <div>Tid</div>
-      <div>Brutto</div>
-      <div>Netto</div>
-    </div>
-    <div id="shiftsBody">
-      <div class="empty-state">Henter data...</div>
-    </div>
-  </div>
+  <div class="shifts" id="shifts"></div>
+
 </div>
 
 <script>
 
 const API_URL = "https://script.google.com/macros/s/AKfycbxgktjTN9a69CGlDBsiL0O7hparyB0_8AsdXG0hW_FNzmHjyVC9bNy-dKj77KgknWRQhA/exec";
 
-var periodOffset = 0;
+async function loadShifts() {
+  try {
+    document.getElementById("status").innerText = "Loading...";
 
-function setStatus(type, text) {
-  document.getElementById('statusDot').className = 'dot ' + type;
-  document.getElementById('statusText').innerText = text;
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    render(data);
+
+    document.getElementById("status").innerText = "Connected";
+  } catch (e) {
+    document.getElementById("status").innerText = "Error";
+  }
 }
 
 function getRates() {
   return {
     base: +baseRate.value,
-    evening: +eveningRate.value,
-    sat: +satRate.value,
-    sun: +sunRate.value,
     tax: +taxRate.value / 100
   };
 }
 
-async function loadShifts() {
-  setStatus('', 'Henter...');
-  try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-    render(data);
-    setStatus('connected', 'Forbundet');
-  } catch (e) {
-    setStatus('error', 'Fejl');
-  }
-}
-
-function calc(s, r) {
-  let bonus = 0;
-  if (s.isSunday) bonus = s.hours * r.sun;
-  else if (s.isSaturday) bonus = s.hours * r.sat;
-  else bonus = s.eveningHours * r.evening;
-
-  return s.hours * r.base + bonus;
-}
-
-function render(shifts) {
+function render(data) {
   const r = getRates();
-  let html = '';
-  let hours = 0, gross = 0;
 
-  shifts.forEach(s => {
-    const g = calc(s, r);
-    const n = g * (1 - r.tax);
+  let h = 0, g = 0;
+  let html = "";
 
-    hours += s.hours;
-    gross += g;
+  data.forEach(s => {
+    const gross = s.hours * r.base;
+    const net = gross * (1 - r.tax);
+
+    h += s.hours;
+    g += gross;
 
     html += `
-      <div class="shift-row">
-        <div>
-          <div class="shift-title">${s.title}</div>
-          <div class="shift-date">${s.date}</div>
-        </div>
-        <div class="mono">${s.hours}t</div>
-        <div class="mono yellow">${Math.round(g)} kr</div>
-        <div class="mono teal">${Math.round(n)} kr</div>
+      <div class="row">
+        <div>${s.title}</div>
+        <div>${s.hours}h</div>
+        <div>${Math.round(gross)} kr</div>
+        <div>${Math.round(net)} kr</div>
       </div>
     `;
   });
 
-  shiftsBody.innerHTML = html;
+  document.getElementById("shifts").innerHTML = html;
 
-  statCount.innerText = shifts.length;
-  statHours.innerText = hours;
-  statGross.innerText = Math.round(gross) + " kr";
-  statNet.innerText = Math.round(gross * (1 - r.tax)) + " kr";
+  count.innerText = data.length;
+  hours.innerText = h;
+  gross.innerText = Math.round(g) + " kr";
+  net.innerText = Math.round(g * (1 - r.tax)) + " kr";
 }
 
-function changePeriod() {}
-function goToNow() {}
-
 loadShifts();
-</script>
 
+</script>
 </body>
 </html>
