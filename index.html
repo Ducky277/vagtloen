@@ -3,147 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vagtløn</title>
+<title>Vagtløn Dashboard</title>
 
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { background: #0e0f11; color: #f0f2f5; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
-  body { padding: 2rem 1rem; }
-  .wrapper { max-width: 960px; margin: 0 auto; }
+body {
+  margin: 0;
+  background: #0e0f11;
+  color: #f0f2f5;
+  font-family: 'DM Sans', sans-serif;
+}
 
-  .logo {
-    font-family: 'DM Mono', monospace;
-    color: #c8f135;
-    margin-bottom: 2rem;
-  }
+.wrapper {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px;
+}
 
-  .settings-bar {
-    background: #16181c;
-    border: 1px solid #2a2d35;
-    border-radius: 12px;
-    padding: 1.25rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
+.header {
+  font-family: 'DM Mono';
+  font-size: 18px;
+  color: #c8f135;
+  margin-bottom: 24px;
+}
 
-  .field {
-    flex: 1;
-    min-width: 120px;
-  }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
 
-  label {
-    font-size: 0.7rem;
-    color: #7a7f8e;
-  }
+.card {
+  background: #16181c;
+  border: 1px solid #2a2d35;
+  border-radius: 12px;
+  padding: 14px;
+}
 
-  input {
-    width: 100%;
-    background: #1e2128;
-    border: 1px solid #2a2d35;
-    color: white;
-    padding: 0.5rem;
-    border-radius: 8px;
-  }
+.label {
+  font-size: 11px;
+  color: #7a7f8e;
+  margin-bottom: 6px;
+  font-family: 'DM Mono';
+}
 
-  .btn {
-    background: #c8f135;
-    border: none;
-    padding: 0.6rem 1rem;
-    cursor: pointer;
-    border-radius: 8px;
-  }
+.value {
+  font-size: 20px;
+  font-family: 'DM Mono';
+}
 
-  .status-bar {
-    margin-bottom: 1rem;
-    color: #7a7f8e;
-  }
+.green { color: #c8f135; }
+.teal { color: #5ce1c8; }
+.red { color: #ff5f5f; }
 
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
+.settings {
+  background: #16181c;
+  border: 1px solid #2a2d35;
+  border-radius: 12px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
 
-  .stat-card {
-    background: #16181c;
-    border: 1px solid #2a2d35;
-    padding: 1rem;
-    border-radius: 12px;
-  }
+input {
+  background: #1e2128;
+  border: 1px solid #2a2d35;
+  border-radius: 8px;
+  color: white;
+  padding: 8px;
+}
 
-  .stat-value {
-    font-size: 1.4rem;
-    font-family: monospace;
-  }
+button {
+  background: #c8f135;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-  .teal { color: #5ce1c8; }
-  .accent { color: #c8f135; }
+.table {
+  background: #16181c;
+  border-radius: 12px;
+  border: 1px solid #2a2d35;
+  overflow: hidden;
+}
 
-  .shifts {
-    background: #16181c;
-    border-radius: 12px;
-    border: 1px solid #2a2d35;
-    padding: 1rem;
-  }
+.row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  padding: 12px;
+  border-bottom: 1px solid #2a2d35;
+}
 
-  .row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    padding: 0.8rem;
-    border-bottom: 1px solid #2a2d35;
-  }
+.row:hover {
+  background: #1e2128;
+}
+
+.small {
+  font-size: 12px;
+  color: #7a7f8e;
+}
 </style>
 </head>
 
 <body>
+
 <div class="wrapper">
 
-  <div class="logo">Vagtløn</div>
+  <div class="header">VAGT LØN DASHBOARD</div>
 
-  <div class="settings-bar">
-    <div class="field">
-      <label>Base rate</label>
-      <input id="baseRate" value="142.17">
-    </div>
-
-    <div class="field">
-      <label>Tax %</label>
-      <input id="taxRate" value="39">
-    </div>
-
-    <button class="btn" onclick="loadShifts()">Load</button>
+  <div class="settings">
+    <input id="base" placeholder="Base løn" value="142.17">
+    <input id="evening" placeholder="Aften tillæg" value="16.08">
+    <input id="weekend" placeholder="Weekend tillæg" value="28.28">
+    <input id="sunday" placeholder="Søndag tillæg" value="31.50">
+    <input id="tax" placeholder="Skat %" value="39">
+    <button onclick="load()">Hent vagter</button>
   </div>
 
-  <div class="status-bar" id="status">Not connected</div>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div>Shifts</div>
-      <div class="stat-value" id="count">—</div>
-    </div>
-
-    <div class="stat-card">
-      <div>Hours</div>
-      <div class="stat-value" id="hours">—</div>
-    </div>
-
-    <div class="stat-card">
-      <div>Gross</div>
-      <div class="stat-value accent" id="gross">—</div>
-    </div>
-
-    <div class="stat-card">
-      <div>Net</div>
-      <div class="stat-value teal" id="net">—</div>
-    </div>
+  <div class="grid">
+    <div class="card"><div class="label">Vagter</div><div class="value" id="count">-</div></div>
+    <div class="card"><div class="label">Timer</div><div class="value" id="hours">-</div></div>
+    <div class="card"><div class="label">Brutto</div><div class="value green" id="gross">-</div></div>
+    <div class="card"><div class="label">Netto</div><div class="value teal" id="net">-</div></div>
   </div>
 
-  <div class="shifts" id="shifts"></div>
+  <div class="table" id="table"></div>
 
 </div>
 
@@ -151,44 +141,54 @@
 
 const API_URL = "https://script.google.com/macros/s/AKfycbxgktjTN9a69CGlDBsiL0O7hparyB0_8AsdXG0hW_FNzmHjyVC9bNy-dKj77KgknWRQhA/exec";
 
-async function loadShifts() {
-  try {
-    document.getElementById("status").innerText = "Loading...";
-
-    const res = await fetch(API_URL);
-    const data = await res.json();
-
-    render(data);
-
-    document.getElementById("status").innerText = "Connected";
-  } catch (e) {
-    document.getElementById("status").innerText = "Error";
-  }
+async function load() {
+  const res = await fetch(API_URL);
+  const data = await res.json();
+  render(data);
 }
 
-function getRates() {
+function calc(s) {
+  const r = rates();
+
+  let bonus = 0;
+
+  if (s.isSunday) bonus = s.hours * r.sunday;
+  else if (s.isSaturday) bonus = s.hours * r.weekend;
+  else bonus = s.eveningHours * r.evening;
+
+  return s.hours * r.base + bonus;
+}
+
+function rates() {
   return {
-    base: +baseRate.value,
-    tax: +taxRate.value / 100
+    base: +base.value,
+    evening: +evening.value,
+    weekend: +weekend.value,
+    sunday: +sunday.value,
+    tax: +tax.value / 100
   };
 }
 
 function render(data) {
-  const r = getRates();
 
-  let h = 0, g = 0;
+  let h = 0;
+  let g = 0;
+
   let html = "";
 
   data.forEach(s => {
-    const gross = s.hours * r.base;
-    const net = gross * (1 - r.tax);
+
+    const gross = calc(s);
+    const net = gross * (1 - rates().tax);
 
     h += s.hours;
     g += gross;
 
     html += `
       <div class="row">
-        <div>${s.title}</div>
+        <div>
+          ${s.title}<div class="small">${s.date}</div>
+        </div>
         <div>${s.hours}h</div>
         <div>${Math.round(gross)} kr</div>
         <div>${Math.round(net)} kr</div>
@@ -196,16 +196,17 @@ function render(data) {
     `;
   });
 
-  document.getElementById("shifts").innerHTML = html;
+  table.innerHTML = html;
 
   count.innerText = data.length;
   hours.innerText = h;
   gross.innerText = Math.round(g) + " kr";
-  net.innerText = Math.round(g * (1 - r.tax)) + " kr";
+  net.innerText = Math.round(g * (1 - rates().tax)) + " kr";
 }
 
-loadShifts();
+load();
 
 </script>
+
 </body>
 </html>
