@@ -83,7 +83,7 @@
     </div>
     <div class="field" style="min-width:200px;flex:2">
       <label>Apps Script URL</label>
-      <input type="text" id="apiUrl" placeholder="Indsæt din URL her...">
+      <input type="text" id="apiUrl" value="https://script.google.com/macros/s/AKfycbxgktjTN9a69CGlDBsiL0O7hparyB0_8AsdXG0hW_FNzmHjyVC9bNy-dKj77KgknWRQhA/exec">
     </div>
     <button class="btn" onclick="loadShifts()">Hent vagter</button>
   </div>
@@ -320,6 +320,16 @@ function saveSettings() {
     if (v) document.getElementById(id).value = v;
   });
   updatePeriodDisplay();
+  // Auto-hent ved opstart hvis URL er gemt
+  if (document.getElementById('apiUrl').value.trim()) {
+    loadShifts();
+  }
+  // Opdater automatisk hvert 30. sekund
+  setInterval(function() {
+    if (document.getElementById('apiUrl').value.trim()) {
+      loadShifts();
+    }
+  }, 30000);
 })();
 </script>
 </body>
