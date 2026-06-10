@@ -126,9 +126,9 @@
       <div class="stat-sub" id="statTaxSub">kr fratrukket</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Lånefradrag</div>
-      <div class="stat-value red" id="statDeduction">—</div>
-      <div class="stat-sub">kr trukket fra</div>
+      <div class="stat-label">Skattefrit beløb</div>
+      <div class="stat-value teal" id="statDeduction">—</div>
+      <div class="stat-sub">kr lagt oveni</div>
     </div>
     <div class="stat-card highlight">
       <div class="stat-label">Nettoudbetaling</div>
@@ -302,15 +302,15 @@ function renderShifts(shifts) {
 }
 
 function updateStats(count, hours, gross, r) {
-  var taxableGross = Math.max(0, gross - r.deduction);
-  var tax = taxableGross * r.tax;
-  var net = gross - tax - r.deduction;
+  var taxable = Math.max(0, gross - r.deduction);
+  var tax = taxable * r.tax;
+  var net = taxable - tax + r.deduction;
   document.getElementById('statCount').textContent      = count;
   document.getElementById('statHours').textContent      = hours % 1 === 0 ? hours : hours.toFixed(1);
   document.getElementById('statGross').textContent      = Math.round(gross).toLocaleString('da-DK') + ' kr';
   document.getElementById('statTax').textContent        = '-' + Math.round(tax).toLocaleString('da-DK') + ' kr';
   document.getElementById('statTaxSub').textContent     = parseFloat(document.getElementById('taxRate').value).toFixed(1) + '% skat fratrukket';
-  document.getElementById('statDeduction').textContent  = '-' + Math.round(r.deduction).toLocaleString('da-DK') + ' kr';
+  document.getElementById('statDeduction').textContent  = '+' + Math.round(r.deduction).toLocaleString('da-DK') + ' kr';
   document.getElementById('statNet').textContent        = Math.round(net).toLocaleString('da-DK') + ' kr';
 }
 
