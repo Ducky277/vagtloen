@@ -78,6 +78,10 @@
       <input type="number" id="sunRate" value="31.50" step="0.01">
     </div>
     <div class="field">
+      <label>AM-bidrag (%)</label>
+      <input type="number" id="amRate" value="8" step="0.1">
+    </div>
+    <div class="field">
       <label>Skatteprocent (%)</label>
       <input type="number" id="taxRate" value="39" step="0.1">
     </div>
@@ -223,6 +227,7 @@ function getRates() {
     evening:   parseFloat(document.getElementById('eveningRate').value) || 16.08,
     sat:       parseFloat(document.getElementById('satRate').value)     || 28.28,
     sun:       parseFloat(document.getElementById('sunRate').value)     || 31.50,
+    am:        parseFloat(document.getElementById('amRate').value)  / 100 || 0.08,
     tax:       parseFloat(document.getElementById('taxRate').value) / 100 || 0.39,
     deduction: parseFloat(document.getElementById('deduction').value)   || 0
   };
@@ -302,14 +307,16 @@ function renderShifts(shifts) {
 }
 
 function updateStats(count, hours, gross, r) {
-  var taxable = Math.max(0, gross - r.deduction);
-  var tax = taxable * r.tax;
-  var net = taxable - tax + r.deduction;
+  var am      = gross * r.am;
+  var afterAm = gross - am;
+  var taxable = Math.max(0, afterAm - r.deduction);
+  var tax     = taxable * r.tax;
+  var net     = taxable - tax + r.deduction;
   document.getElementById('statCount').textContent      = count;
   document.getElementById('statHours').textContent      = hours % 1 === 0 ? hours : hours.toFixed(1);
   document.getElementById('statGross').textContent      = Math.round(gross).toLocaleString('da-DK') + ' kr';
-  document.getElementById('statTax').textContent        = '-' + Math.round(tax).toLocaleString('da-DK') + ' kr';
-  document.getElementById('statTaxSub').textContent     = parseFloat(document.getElementById('taxRate').value).toFixed(1) + '% skat fratrukket';
+  document.getElementById('statTax').textContent        = '-' + Math.round(am + tax).toLocaleString('da-DK') + ' kr';
+  document.getElementById('statTaxSub').textContent     = 'AM ' + parseFloat(document.getElementById('amRate').value) + '% + skat ' + parseFloat(document.getElementById('taxRate').value).toFixed(1) + '%';
   document.getElementById('statDeduction').textContent  = '+' + Math.round(r.deduction).toLocaleString('da-DK') + ' kr';
   document.getElementById('statNet').textContent        = Math.round(net).toLocaleString('da-DK') + ' kr';
 }
@@ -321,13 +328,14 @@ function saveSettings() {
   localStorage.setItem('vl_evening',   document.getElementById('eveningRate').value);
   localStorage.setItem('vl_sat',       document.getElementById('satRate').value);
   localStorage.setItem('vl_sun',       document.getElementById('sunRate').value);
+  localStorage.setItem('vl_am',        document.getElementById('amRate').value);
   localStorage.setItem('vl_tax',       document.getElementById('taxRate').value);
   localStorage.setItem('vl_deduction', document.getElementById('deduction').value);
   localStorage.setItem('vl_url',       document.getElementById('apiUrl').value);
 }
 
 (function() {
-  var map = {baseRate:'vl_base', eveningRate:'vl_evening', satRate:'vl_sat', sunRate:'vl_sun', taxRate:'vl_tax', deduction:'vl_deduction', apiUrl:'vl_url'};
+  var map = {baseRate:'vl_base', eveningRate:'vl_evening', satRate:'vl_sat', sunRate:'vl_sun', amRate:'vl_am', taxRate:'vl_tax', deduction:'vl_deduction', apiUrl:'vl_url'};
   Object.keys(map).forEach(function(id) {
     var v = localStorage.getItem(map[id]);
     if (v) document.getElementById(id).value = v;
