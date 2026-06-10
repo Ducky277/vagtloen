@@ -81,6 +81,10 @@
       <label>Skatteprocent (%)</label>
       <input type="number" id="taxRate" value="39" step="0.1">
     </div>
+    <div class="field">
+      <label>Fast fradrag (kr/md)</label>
+      <input type="number" id="deduction" value="5000" step="1" title="Trækkes fra brutto inden skat — fx lånebetaling">
+    </div>
     <div class="field" style="min-width:200px;flex:2">
       <label>Apps Script URL</label>
       <input type="text" id="apiUrl" value="https://script.google.com/macros/s/AKfycbxgktjTN9a69CGlDBsiL0O7hparyB0_8AsdXG0hW_FNzmHjyVC9bNy-dKj77KgknWRQhA/exec">
@@ -120,6 +124,11 @@
       <div class="stat-label">Skat</div>
       <div class="stat-value red" id="statTax">—</div>
       <div class="stat-sub" id="statTaxSub">kr fratrukket</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Lånefradrag</div>
+      <div class="stat-value red" id="statDeduction">—</div>
+      <div class="stat-sub">kr trukket fra</div>
     </div>
     <div class="stat-card highlight">
       <div class="stat-label">Nettoudbetaling</div>
@@ -210,11 +219,12 @@ function setStatus(state, text) {
 
 function getRates() {
   return {
-    base:    parseFloat(document.getElementById('baseRate').value)    || 142.17,
-    evening: parseFloat(document.getElementById('eveningRate').value) || 16.08,
-    sat:     parseFloat(document.getElementById('satRate').value)     || 28.28,
-    sun:     parseFloat(document.getElementById('sunRate').value)     || 31.50,
-    tax:     parseFloat(document.getElementById('taxRate').value) / 100 || 0.39
+    base:      parseFloat(document.getElementById('baseRate').value)    || 142.17,
+    evening:   parseFloat(document.getElementById('eveningRate').value) || 16.08,
+    sat:       parseFloat(document.getElementById('satRate').value)     || 28.28,
+    sun:       parseFloat(document.getElementById('sunRate').value)     || 31.50,
+    tax:       parseFloat(document.getElementById('taxRate').value) / 100 || 0.39,
+    deduction: parseFloat(document.getElementById('deduction').value)   || 0
   };
 }
 
@@ -292,29 +302,32 @@ function renderShifts(shifts) {
 }
 
 function updateStats(count, hours, gross, r) {
-  var tax = gross * r.tax;
-  var net = gross - tax;
-  document.getElementById('statCount').textContent  = count;
-  document.getElementById('statHours').textContent  = hours % 1 === 0 ? hours : hours.toFixed(1);
-  document.getElementById('statGross').textContent  = Math.round(gross).toLocaleString('da-DK') + ' kr';
-  document.getElementById('statTax').textContent    = '-' + Math.round(tax).toLocaleString('da-DK') + ' kr';
-  document.getElementById('statTaxSub').textContent = parseFloat(document.getElementById('taxRate').value).toFixed(1) + '% skat fratrukket';
-  document.getElementById('statNet').textContent    = Math.round(net).toLocaleString('da-DK') + ' kr';
+  var taxableGross = Math.max(0, gross - r.deduction);
+  var tax = taxableGross * r.tax;
+  var net = gross - tax - r.deduction;
+  document.getElementById('statCount').textContent      = count;
+  document.getElementById('statHours').textContent      = hours % 1 === 0 ? hours : hours.toFixed(1);
+  document.getElementById('statGross').textContent      = Math.round(gross).toLocaleString('da-DK') + ' kr';
+  document.getElementById('statTax').textContent        = '-' + Math.round(tax).toLocaleString('da-DK') + ' kr';
+  document.getElementById('statTaxSub').textContent     = parseFloat(document.getElementById('taxRate').value).toFixed(1) + '% skat fratrukket';
+  document.getElementById('statDeduction').textContent  = '-' + Math.round(r.deduction).toLocaleString('da-DK') + ' kr';
+  document.getElementById('statNet').textContent        = Math.round(net).toLocaleString('da-DK') + ' kr';
 }
 
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function saveSettings() {
-  localStorage.setItem('vl_base',    document.getElementById('baseRate').value);
-  localStorage.setItem('vl_evening', document.getElementById('eveningRate').value);
-  localStorage.setItem('vl_sat',     document.getElementById('satRate').value);
-  localStorage.setItem('vl_sun',     document.getElementById('sunRate').value);
-  localStorage.setItem('vl_tax',     document.getElementById('taxRate').value);
-  localStorage.setItem('vl_url',     document.getElementById('apiUrl').value);
+  localStorage.setItem('vl_base',      document.getElementById('baseRate').value);
+  localStorage.setItem('vl_evening',   document.getElementById('eveningRate').value);
+  localStorage.setItem('vl_sat',       document.getElementById('satRate').value);
+  localStorage.setItem('vl_sun',       document.getElementById('sunRate').value);
+  localStorage.setItem('vl_tax',       document.getElementById('taxRate').value);
+  localStorage.setItem('vl_deduction', document.getElementById('deduction').value);
+  localStorage.setItem('vl_url',       document.getElementById('apiUrl').value);
 }
 
 (function() {
-  var map = {baseRate:'vl_base', eveningRate:'vl_evening', satRate:'vl_sat', sunRate:'vl_sun', taxRate:'vl_tax', apiUrl:'vl_url'};
+  var map = {baseRate:'vl_base', eveningRate:'vl_evening', satRate:'vl_sat', sunRate:'vl_sun', taxRate:'vl_tax', deduction:'vl_deduction', apiUrl:'vl_url'};
   Object.keys(map).forEach(function(id) {
     var v = localStorage.getItem(map[id]);
     if (v) document.getElementById(id).value = v;
