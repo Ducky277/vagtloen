@@ -307,17 +307,33 @@ function renderShifts(shifts) {
 }
 
 function updateStats(count, hours, gross, r) {
-  var am      = gross * r.am;
-  var afterAm = gross - am;
-  var taxable = Math.max(0, afterAm - r.deduction);
-  var tax     = taxable * r.tax;
-  var net     = taxable - tax + r.deduction;
+  var am  = 0;
+  var tax = 0;
+  var net = 0;
+
+  if (gross <= 5000) {
+    // Under 5.000 kr — kun AM-bidrag
+    am  = gross * r.am;
+    net = gross - am;
+  } else {
+    // Over 5.000 kr
+    var taxable = gross - r.deduction;        // hele løn - 5000 kr
+    am  = taxable * r.am;                      // AM af resten
+    var afterAm = taxable - am;               // efter AM
+    tax = afterAm * r.tax;                    // skat af resten
+    net = afterAm - tax + r.deduction;        // + 5000 kr oveni
+  }
+
   document.getElementById('statCount').textContent      = count;
   document.getElementById('statHours').textContent      = hours % 1 === 0 ? hours : hours.toFixed(1);
   document.getElementById('statGross').textContent      = Math.round(gross).toLocaleString('da-DK') + ' kr';
   document.getElementById('statTax').textContent        = '-' + Math.round(am + tax).toLocaleString('da-DK') + ' kr';
-  document.getElementById('statTaxSub').textContent     = 'AM ' + parseFloat(document.getElementById('amRate').value) + '% + skat ' + parseFloat(document.getElementById('taxRate').value).toFixed(1) + '%';
-  document.getElementById('statDeduction').textContent  = '+' + Math.round(r.deduction).toLocaleString('da-DK') + ' kr';
+  document.getElementById('statTaxSub').textContent     = gross <= 5000
+    ? 'Kun AM-bidrag ' + parseFloat(document.getElementById('amRate').value) + '%'
+    : 'AM ' + parseFloat(document.getElementById('amRate').value) + '% + skat ' + parseFloat(document.getElementById('taxRate').value).toFixed(1) + '%';
+  document.getElementById('statDeduction').textContent  = gross <= 5000
+    ? '— (under 5.000 kr)'
+    : '+' + Math.round(r.deduction).toLocaleString('da-DK') + ' kr';
   document.getElementById('statNet').textContent        = Math.round(net).toLocaleString('da-DK') + ' kr';
 }
 
